@@ -4,6 +4,8 @@ import com.hampus_code.labb_1.model.CustomMovie
 import com.hampus_code.labb_1.repository.CustomMovieRepository
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
@@ -25,5 +27,13 @@ class CustomMovieController(
         }
 
         return ResponseEntity.notFound().build()
+    }
+
+    @PostMapping
+    fun postNewMovie(@RequestBody customMovie: CustomMovie): ResponseEntity<String> {
+
+        customMovieRepository.save(customMovie)
+
+        return ResponseEntity.status(201).body("Movie Created")
     }
 }
