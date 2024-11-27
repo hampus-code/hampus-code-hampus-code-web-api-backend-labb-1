@@ -5,10 +5,10 @@ import jakarta.persistence.*
 @Entity
 @Table(name = "movie")
 class CustomMovie(
-    val title: String = "",
-    val director: String = "",
-    val actor: String = "",
-    val isEnabled: Boolean = true
+    var title: String = "",
+    var director: String = "",
+    var actor: String = "",
+    var isEnabled: Boolean = true
 ) {
 
     @Id

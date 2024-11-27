@@ -3,13 +3,7 @@ package com.hampus_code.labb_1.controller
 import com.hampus_code.labb_1.model.CustomMovie
 import com.hampus_code.labb_1.repository.CustomMovieRepository
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/movie")
@@ -48,12 +42,31 @@ class CustomMovieController(
         if (existingMovieOptional.isPresent) {
             val existingMovie = existingMovieOptional.get()
 
+            existingMovie.title = customMovie.title
+            existingMovie.director = customMovie.director
+            existingMovie.actor = customMovie.actor
+            existingMovie.isEnabled = customMovie.isEnabled
+
             customMovieRepository.save(existingMovie)
 
             return ResponseEntity.status(200).body("Movie Updated")
         } else {
             return ResponseEntity.status(404).body("Movie Not Found")
         }
+    }
+
+    @DeleteMapping
+    fun deleteMovie(@RequestParam("id") id: Long): ResponseEntity<String> {
+
+        val foundOptionalMovie = customMovieRepository.findById(id)
+
+        if (foundOptionalMovie.isPresent) {
+            customMovieRepository.deleteById(id)
+            return ResponseEntity.status(200).body("Movie Deleted")
+        } else {
+            return ResponseEntity.status(404).body("Movie Not Found")
+        }
+
     }
 
 }
