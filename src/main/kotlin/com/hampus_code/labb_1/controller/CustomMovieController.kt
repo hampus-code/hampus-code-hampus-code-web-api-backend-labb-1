@@ -5,6 +5,7 @@ import com.hampus_code.labb_1.repository.CustomMovieRepository
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -36,4 +37,23 @@ class CustomMovieController(
 
         return ResponseEntity.status(201).body("Movie Created")
     }
+
+    @PutMapping
+    fun putMovie(@RequestParam("id") id: Long,
+                 @RequestBody customMovie: CustomMovie
+    ): ResponseEntity<String> {
+
+        val existingMovieOptional = customMovieRepository.findById(id)
+
+        if (existingMovieOptional.isPresent) {
+            val existingMovie = existingMovieOptional.get()
+
+            customMovieRepository.save(existingMovie)
+
+            return ResponseEntity.status(200).body("Movie Updated")
+        } else {
+            return ResponseEntity.status(404).body("Movie Not Found")
+        }
+    }
+
 }
