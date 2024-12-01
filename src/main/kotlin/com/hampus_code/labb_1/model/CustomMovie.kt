@@ -3,7 +3,6 @@ package com.hampus_code.labb_1.model
 import jakarta.persistence.*
 
 @Entity
-@Table(name = "movie")
 class CustomMovie(
     var title: String = "",
     var director: String = "",
